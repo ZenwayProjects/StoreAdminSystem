@@ -1,5 +1,6 @@
 package com.zenway.prueba.model;
 
+import com.fasterxml.jackson.annotation.JsonIgnore;
 import jakarta.persistence.*;
 import lombok.Data;
 
@@ -12,15 +13,16 @@ public class Categoria {
     @Id
     @GeneratedValue(strategy = GenerationType.AUTO)
     @Column(name = "categoria_id")
-    private Long categoria_id;
+    private Long categoriaId;
 
-    @Column(name = "cat_nombre")
-    private String cat_nombre;
+    @Column(name = "cat_nombre", unique = true)
+    private String catNombre;
 
     @OneToMany(mappedBy = "local_categoria")
     private List<LocalComercial> locales;
 
-    @OneToMany(fetch = FetchType.EAGER, cascade = CascadeType.ALL, mappedBy = "cat_padre")
+    @JsonIgnore
+    @OneToMany(fetch = FetchType.EAGER, cascade = CascadeType.ALL, mappedBy = "catPadre")
     private List<SubCategoria> subcategorias;
 
 

@@ -15,20 +15,20 @@ public class LocalComercial {
     @Id
     @GeneratedValue(strategy = GenerationType.AUTO)
     @Column(name = "local_id")
-    private Long local_id;
+    private Long localId;
 
     @Column(name = "local_nombre")
-    private String local_nombre;
+    private String localNombre;
 
     @Column(name = "local_ubicacion")
-    private String local_ubicacion;
+    private String localUbicacion;
 
     @Column(name = "local_celular")
-    private String local_celular;
+    private String localCelular;
 
 
     @Enumerated(EnumType.STRING)
-    private local_estado local_estado;
+    private local_estado localEstado;
 
     public static  enum local_estado{
 
