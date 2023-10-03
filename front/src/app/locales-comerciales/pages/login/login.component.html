@@ -1,0 +1,45 @@
+<<link rel="stylesheet" href="https://cdnjs.cloudflare.com/ajax/libs/font-awesome/5.15.3/css/all.min.css">
+<link rel="stylesheet" href="https://cdn.jsdelivr.net/npm/bootstrap@5.5.0/dist/css/bootstrap.min.css">
+<div class="container vh-100 d-flex align-items-center">
+  <main class="form-signin w-100 m-auto border shadow-lg rounded">
+    <form [formGroup]="loginForm" class="p-4" (ngSubmit)="submitForm()" autocomplete="off">
+      <div class="text-center mb-4">
+        <i class="fas fa-store fa-5x mb-3 text-primary"></i> 
+        <h1 class="h3 mb-3 fw-normal">Inicia Sesión</h1>
+      </div>
+      <div class="form-floating">
+        <input
+          formControlName="username"
+          type="text"
+          class="form-control"
+          id="floatingInput"
+          placeholder="Nombre de usuario"
+        />
+        <label for="floatingInput">Nombre de usuario</label>
+      </div>
+      <div class="form-floating">
+        <input
+          formControlName="password"
+          type="password"
+          class="form-control"
+          id="floatingPassword"
+          placeholder="Contraseña"
+        />
+        <label for="floatingPassword">Contraseña</label>
+      </div>
+
+      <button
+        class="btn btn-primary w-100 my-3 py-2"
+        type="submit"
+        [disabled]="loginForm.invalid"
+      >
+        Iniciar Sesión
+      </button>
+      <p class="mt-5 mb-3 text-body-secondary text-center">&copy; 2023 Tu Empresa</p>
+    </form>
+  </main>
+</div>
+
+
+<script src="https://cdnjs.cloudflare.com/ajax/libs/font-awesome/5.15.3/js/all.min.js"></script>
+<script src="https://cdn.jsdelivr.net/npm/bootstrap@5.5.0/dist/js/bootstrap.bundle.min.js"></script>

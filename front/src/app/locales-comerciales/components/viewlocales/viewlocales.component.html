@@ -1,0 +1,108 @@
+<link rel="stylesheet" href="https://cdnjs.cloudflare.com/ajax/libs/font-awesome/5.15.3/css/all.min.css">
+<div class="container">
+  <div class="row">
+    <div class="col-6" *ngFor="let shop of shops">
+      <div class="card shadow my-2">
+        <div class="card-body">
+          <div class="d-flex justify-content-between align-items-center">
+            <h5 class="card-title">{{ shop.nombreNegocio }}</h5>
+            <div>
+              <button class="btn btn-danger btn-sm" (click)="onDelete(shop.id)">
+                <i class="fas fa-trash"></i> 
+              </button>
+              <button
+                class="btn btn-primary btn-sm ms-2 animated"
+                data-bs-toggle="modal"
+                data-bs-target="#exampleModal"
+                (click)="handleModal(shop)"
+              >
+                <i class="fas fa-edit"></i>
+              </button>              
+            </div>
+          </div>
+          <div class="mt-3">
+            <button
+              class="btn btn-primary btn-sm" 
+              data-bs-toggle="collapse"
+              [attr.data-bs-target]="'#shopDetails' + shop.id"
+              aria-expanded="false"
+            >
+                Ver detalles
+            </button>
+            <div class="collapse mt-3" [id]="'shopDetails' + shop.id" style="background-color: #181717; color: white;">
+              <ul class="list-group list-group-flush">
+                <li class="list-group-item"><strong>Ubicación:</strong> {{ shop.ubicacion }}</li>
+                <li class="list-group-item"><strong>Representante Legal:</strong> {{ shop.representanteLegal }}</li>
+                <li class="list-group-item"><strong>Teléfono de Contacto:</strong> {{ shop.telefonoContacto }}</li>
+                <li class="list-group-item"><strong>Estado:</strong> {{ shop.estado }}</li>
+              </ul>
+            </div>            
+          </div>
+        </div>
+      </div>
+    </div>
+  </div>
+  <button class="btn btn-primary mt-3 animated" (click)="createPDF()">
+    <i class="fas fa-file-pdf"></i> Generar PDF
+  </button>
+</div>
+
+<!-- Modal -->
+<div class="modal fade" id="exampleModal" tabindex="-1" aria-labelledby="exampleModalLabel" aria-hidden="true">
+  <div class="modal-dialog">
+    <div class="modal-content bg-dark text-white">
+      <div class="modal-header">
+        <h1 class="modal-title fs-5" id="exampleModalLabel">Editar Local Comercial</h1>
+        <button type="button" class="btn-close text-white" data-bs-dismiss="modal" aria-label="Close"></button>
+      </div>
+      <div class="modal-body">
+        <form [formGroup]="updateForm" (ngSubmit)="onFormSubmit()" autocomplete="off">
+          <div class="form-group">
+            <label for="nombreNegocio" class="text-white">Nombre del negocio</label>
+            <input type="text" class="form-control" id="nombreNegocio" formControlName="nombreNegocio" />
+          </div>
+          <div class="form-group">
+            <label for="ubicacion" class="text-white">Ubicación</label>
+            <input type="text" class="form-control" id="ubicacion" formControlName="ubicacion" />
+          </div>
+          <div class="form-group">
+            <label for="representanteLegal" class="text-white">Representante Legal</label>
+            <input type="text" class="form-control" id="representanteLegal" formControlName="representanteLegal" />
+          </div>
+          <div class="form-group">
+            <label for="telefonoContacto" class="text-white">Teléfono de contacto</label>
+            <input type="text" class="form-control" id="telefonoContacto" formControlName="telefonoContacto" />
+          </div>
+          <div class="form-group">
+            <label for="estado" class="text-white">Estado</label>
+            <select class="form-control" id="estado" formControlName="estado">
+              <option value="">Selecciona un estado</option>
+              <option *ngFor="let estado of estados" [value]="estado">{{ estado }}</option>
+            </select>
+          </div>
+
+          <div class="form-group">
+            <label for="categoria" class="text-white">Categoría</label>
+            <select class="form-control" id="categoria" formControlName="categoria" (change)="onCategoriaChange()">
+              <option value="">Selecciona una categoría</option>
+              <option *ngFor="let categoria of categoriesData" [value]="categoria">{{ categoria }}</option>
+            </select>
+          </div>
+          <div class="form-group">
+            <label for="subCategoria" class="text-white">Subcategoría</label>
+            <select class="form-control" id="subCategoria" formControlName="subCategoria">
+              <option value="">Selecciona una subcategoría</option>
+              <option *ngFor="let subcategoria of subcategorias[updateForm.get('categoria')!.value]" [value]="subcategoria.id">{{ subcategoria.nombre }}</option>
+            </select>
+          </div>
+          <button type="submit" class="btn btn-primary my-3"(click)="onEditShop(selectedShop.id)">
+            Guardar cambios
+          </button>
+        </form>
+      </div>
+      <div class="modal-footer">
+        <button type="button" class="btn btn-danger animated" data-bs-dismiss="modal">Cerrar</button>
+      </div>
+    </div>
+  </div>
+</div>
