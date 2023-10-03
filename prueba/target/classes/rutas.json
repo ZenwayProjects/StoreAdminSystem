@@ -48,5 +48,15 @@
     "metodo": "GET",
     "ruta": "/api/subcategoria/listar",
     "roles": ["ADMIN"]
+  },
+  {
+    "metodo": "POST",
+    "ruta": "/api/local/crear",
+    "roles": ["ADMIN"]
+  },
+  {
+    "metodo": "GET",
+    "ruta": "/api/local/listar",
+    "roles": ["ADMIN"]
   }
 ]
