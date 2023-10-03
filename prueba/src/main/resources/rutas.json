@@ -28,5 +28,25 @@
     "metodo": "GET",
     "ruta": "/api/local/listar",
     "roles": ["ADMIN", "VIGILANTE", "USUARIO_LOCAL"]
+  },
+  {
+    "metodo": "POST",
+    "ruta": "/api/categoria/crear",
+    "roles": ["ADMIN"]
+  },
+  {
+    "metodo": "GET",
+    "ruta": "/api/categoria/listar",
+    "roles": ["ADMIN"]
+  },
+  {
+    "metodo": "GET",
+    "ruta": "/api/subcategoria/crear",
+    "roles": ["ADMIN"]
+  },
+  {
+    "metodo": "GET",
+    "ruta": "/api/subcategoria/listar",
+    "roles": ["ADMIN"]
   }
 ]

@@ -1,7 +1,6 @@
 package com.zenway.prueba.controller;
 
 import com.zenway.prueba.model.SubCategoria;
-import com.zenway.prueba.repository.SubCategoriaRepository;
 import com.zenway.prueba.service.SubCategoriaService;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.http.HttpStatus;
@@ -43,7 +42,7 @@ public class SubCategoriaController {
         return new ResponseEntity<>(nuevaSubcategoria, HttpStatus.CREATED);
     }
 
-    @GetMapping("/{subcategoriaId}")
+    @GetMapping("{subcategoriaId}")
     public ResponseEntity<SubCategoria> obtenerSubcategoriaPorId(@PathVariable Long subcategoriaId) {
         SubCategoria subcategoria = subCategoriaService.obtenerSubcategoriaPorId(subcategoriaId);
         if (subcategoria != null) {
