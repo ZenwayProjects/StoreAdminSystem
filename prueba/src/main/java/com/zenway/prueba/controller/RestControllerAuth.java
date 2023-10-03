@@ -62,6 +62,7 @@ public class RestControllerAuth {
         usuario.setLogin(dtoRegistro.getLogin());
         usuario.setPassword(passwordEncoder.encode(dtoRegistro.getPassword()));
         usuario.setNumeroDocumento(dtoRegistro.getNumeroDocumento());
+
         Rol rol = rolRepo.findByRolNombre("ADMIN").orElseThrow(() -> new RuntimeException("Rol no encontrado"));
         usuario.setRoles(Collections.singletonList(rol));
         usuarioRepo.save(usuario);
