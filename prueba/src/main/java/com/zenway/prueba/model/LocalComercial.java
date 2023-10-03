@@ -1,5 +1,6 @@
 package com.zenway.prueba.model;
 
+import com.fasterxml.jackson.annotation.JsonIgnore;
 import jakarta.persistence.*;
 import jdk.jfr.DataAmount;
 import lombok.Data;
@@ -36,15 +37,9 @@ public class LocalComercial {
     }
 
 
-
-
-    @ManyToOne
-    @JoinColumn(name = "local_categoria_id", referencedColumnName = "categoria_id")
-    private Categoria local_categoria;
-
     @ManyToOne
     @JoinColumn(name = "local_subcategoria_id", referencedColumnName = "subcategoria_id")
-    private SubCategoria local_subcategoria;
+    private SubCategoria localSubcategoria;
 
     @OneToMany(mappedBy = "usl_local")
     private Set<UsuarioLocal> usuariosLocales = new HashSet<>();

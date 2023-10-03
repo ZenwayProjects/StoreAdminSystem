@@ -15,11 +15,9 @@ public class Categoria {
     @Column(name = "categoria_id")
     private Long categoriaId;
 
-    @Column(name = "cat_nombre", unique = true)
+    @Column(name = "cat_nombre", unique = true, nullable = false)
     private String catNombre;
 
-    @OneToMany(mappedBy = "local_categoria")
-    private List<LocalComercial> locales;
 
     @JsonIgnore
     @OneToMany(fetch = FetchType.EAGER, cascade = CascadeType.ALL, mappedBy = "catPadre")

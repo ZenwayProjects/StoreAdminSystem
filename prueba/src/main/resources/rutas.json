@@ -1,0 +1,32 @@
+[
+  {
+    "metodo": "GET",
+    "ruta": "/api/usuario/list",
+    "roles": ["ADMIN", "VIGILANTE", "USUARIO_LOCAL"]
+  },
+  {
+    "metodo": "GET",
+    "ruta": "/api/usuario/mi-info",
+    "roles": ["ADMIN", "VIGILANTE", "USUARIO_LOCAL"]
+  },
+  {
+    "metodo": "GET",
+    "ruta": "/api/usuario/{id}",
+    "roles": ["ADMIN"]
+  },
+  {
+    "metodo": "DELETE",
+    "ruta": "/api/usuario/delete/{id}",
+    "roles": ["ADMIN"]
+  },
+  {
+    "metodo": "PUT",
+    "ruta": "/api/usuario/update/{id}",
+    "roles": ["ADMIN", "VIGILANTE"]
+  },
+  {
+    "metodo": "GET",
+    "ruta": "/api/local/listar",
+    "roles": ["ADMIN", "VIGILANTE", "USUARIO_LOCAL"]
+  }
+]

@@ -13,6 +13,7 @@ import java.util.List;
 @RestController
 @RequestMapping("/api/subcategoria/")
 public class SubCategoriaController {
+
     private final SubCategoriaService subCategoriaService;
 
     @Autowired
@@ -27,18 +28,28 @@ public class SubCategoriaController {
     }
 
     // Endpoint para obtener subcategorías por el campo categoria_id de la relación catPadre
-    @GetMapping("listar/cat_padre/{categoriaId}")
-    public ResponseEntity<List<SubCategoria>> obtenerSubCategoriasPorCategoria(@PathVariable Long categoriaId) {
-        List<SubCategoria> subCategorias = subCategoriaService.listarSubcategoriasPorCategoria(categoriaId);
-        return new ResponseEntity<>(subCategorias, HttpStatus.OK);
+    @GetMapping("/listarsubcategoria/{categoriaId}")
+    public ResponseEntity<List<SubCategoria>> listarSubcategoriasPorCategoria(@PathVariable Long categoriaId) {
+        List<SubCategoria> subcategorias = subCategoriaService.listarSubcategoriasPorCategoria(categoriaId);
+        return ResponseEntity.ok(subcategorias);
     }
 
 
 
     // Endpoint para crear una nueva subcategoría
-    @PostMapping("/crear/{categoriaId}")
-    public ResponseEntity<SubCategoria> crearSubcategoria(@RequestBody SubCategoria subCategoria, @PathVariable Long categoriaId) {
-        SubCategoria nuevaSubcategoria = subCategoriaService.crearSubCategoria(subCategoria, categoriaId);
-        return ResponseEntity.status(HttpStatus.CREATED).body(nuevaSubcategoria);
+    @PostMapping("crear")
+    public ResponseEntity<SubCategoria> crearSubcategoria(@RequestBody SubCategoria subCategoria) {
+        SubCategoria nuevaSubcategoria = subCategoriaService.crearSubCategoria(subCategoria);
+        return new ResponseEntity<>(nuevaSubcategoria, HttpStatus.CREATED);
+    }
+
+    @GetMapping("/{subcategoriaId}")
+    public ResponseEntity<SubCategoria> obtenerSubcategoriaPorId(@PathVariable Long subcategoriaId) {
+        SubCategoria subcategoria = subCategoriaService.obtenerSubcategoriaPorId(subcategoriaId);
+        if (subcategoria != null) {
+            return ResponseEntity.ok(subcategoria);
+        } else {
+            return ResponseEntity.notFound().build();
+        }
     }
 }

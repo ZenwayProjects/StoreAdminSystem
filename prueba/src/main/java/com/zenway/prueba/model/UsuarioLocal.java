@@ -20,9 +20,6 @@ public class UsuarioLocal {
     @JoinColumn(name = "usl_local_id", referencedColumnName = "local_id")
     private LocalComercial usl_local;
 
-    @ManyToOne
-    @JoinColumn(name = "usl_rol_id", referencedColumnName = "rol_id")
-    private Rol usl_rol;
 
 
 

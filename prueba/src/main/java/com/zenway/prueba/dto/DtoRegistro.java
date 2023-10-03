@@ -9,13 +9,11 @@ import java.util.Date;
 public class DtoRegistro {
     private String nombre;
 
-    private String apellido;
+    private String apellidos;
 
-    private Date fechaNacimiento;
+    private String login;
 
-    private String email;
+    private String password;
 
-    private String direccion;
-
-    private int telefono;
+    private String numeroDocumento;
 }

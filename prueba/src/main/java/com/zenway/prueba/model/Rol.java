@@ -12,9 +12,9 @@ public class Rol {
     @Id
     @Column(name = "rol_id")
     @GeneratedValue(strategy = GenerationType.AUTO)
-    private Long rol_id;
+    private Long rolId;
 
     @Column(name = "rol_nombre")
-    private String rol_nombre;
+    private String rolNombre;
 
 }

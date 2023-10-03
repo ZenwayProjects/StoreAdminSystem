@@ -32,4 +32,6 @@ public class CategoriaController {
         Categoria categoriaCreada = categoriaService.crearCategoria(nuevaCategoria);
         return new ResponseEntity<>(categoriaCreada, HttpStatus.CREATED);
     }
+
+
 }

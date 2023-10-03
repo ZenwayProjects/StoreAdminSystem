@@ -13,7 +13,7 @@ public class SubCategoria {
     @Id
     @GeneratedValue(strategy = GenerationType.AUTO)
     @Column(name = "subcategoria_id")
-    private Long subcat_id;
+    private Long id;
 
     @Column(name = "subcat_nombre")
     private String subcNombre;
@@ -22,11 +22,10 @@ public class SubCategoria {
     @JoinColumn(name = "cat_padre_id", referencedColumnName = "categoria_id")
     private Categoria catPadre;
 
-    @OneToMany(mappedBy = "local_subcategoria")
+    @JsonIgnore
+    @OneToMany(mappedBy = "localSubcategoria")
     private List<LocalComercial> locales;
 
-    @Transient
-    private String catPadreNombre;
 
 
 

@@ -1,0 +1,12 @@
+com\zenway\prueba\repository\CategoriaRepository.class
+com\zenway\prueba\model\Categoria.class
+com\zenway\prueba\model\SubCategoria.class
+com\zenway\prueba\model\LocalComercial.class
+com\zenway\prueba\service\CategoriaService.class
+com\zenway\prueba\model\LocalComercial$local_estado.class
+com\zenway\prueba\model\UsuarioLocal.class
+com\zenway\prueba\dto\DtoRegistro.class
+com\zenway\prueba\model\Auditoria.class
+com\zenway\prueba\model\Rol.class
+com\zenway\prueba\model\Usuario.class
+com\zenway\prueba\controller\RestControllerAuth.class

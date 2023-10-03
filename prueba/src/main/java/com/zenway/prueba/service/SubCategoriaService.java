@@ -35,24 +35,15 @@ public class SubCategoriaService {
     public List<SubCategoria> listarTodasSubCategorias() {
         return subCategoriaRepository.findAll();
     }
-
     // Método para crear una nueva subcategoría
-    public SubCategoria crearSubCategoria(SubCategoria subCategoria, Long categoriaId) {
-        // Busca la categoría padre por su Id
-        Categoria categoriaPadre = CategoriaRepository.findById(categoriaId).orElse(null);
+    public SubCategoria crearSubCategoria(SubCategoria subCategoria) {
 
-        if (categoriaPadre != null) {
-            // Establece el nombre de la categoría padre en la subcategoría
-            subCategoria.setCatPadreNombre(categoriaPadre.getCatNombre());
-            // Establece la relación con la categoría padre
-            subCategoria.setCatPadre(categoriaPadre);
 
-            // Guarda la subcategoría en la base de datos
-            return subCategoriaRepository.save(subCategoria);
-        } else {
-            // Maneja el caso en que la categoría padre no existe
-            throw new IllegalArgumentException("La categoría padre no existe");
-        }
+        return subCategoriaRepository.save(subCategoria);
+    }
+    public SubCategoria obtenerSubcategoriaPorId(Long subcategoriaId) {
+        return subCategoriaRepository.findById(subcategoriaId)
+                .orElse(null);
     }
 
 }
