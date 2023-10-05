@@ -5,6 +5,7 @@ import com.zenway.prueba.service.CategoriaService;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.http.HttpStatus;
 import org.springframework.http.ResponseEntity;
+import org.springframework.security.access.annotation.Secured;
 import org.springframework.web.bind.annotation.*;
 
 import java.util.List;
@@ -24,6 +25,11 @@ public class CategoriaController {
     public ResponseEntity<List<Categoria>> listarTodasLasCategorias() {
         List<Categoria> categorias = categoriaService.listarLasCategorias();
         return new ResponseEntity<>(categorias, HttpStatus.OK);
+    }
+
+    @GetMapping("/listar/consubcategorias")
+    public List<Categoria> listarCategoriasConSubcategorias() {
+        return categoriaService.listarCategoriasConSubcategorias();
     }
 
     // Endpoint para crear una nueva categoría

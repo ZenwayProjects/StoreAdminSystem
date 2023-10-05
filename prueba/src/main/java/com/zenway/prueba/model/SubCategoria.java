@@ -18,7 +18,8 @@ public class SubCategoria {
     @Column(name = "subcat_nombre")
     private String subcNombre;
 
-    @ManyToOne
+    @JsonIgnore
+    @ManyToOne(fetch = FetchType.LAZY)
     @JoinColumn(name = "cat_padre_id", referencedColumnName = "categoria_id")
     private Categoria catPadre;
 
@@ -27,8 +28,16 @@ public class SubCategoria {
     private List<LocalComercial> locales;
 
 
+    @Override
+    public String toString() {
+        if (catPadre != null && catPadre.equals(this)) {
+            return "";
+        }
 
-
-
+        return "SubCategoria{" +
+                "subcategoriaId=" + id +
+                ", subcatNombre='" + subcNombre + '\'' +
+                '}';
+    }
 
 }

@@ -73,11 +73,15 @@ public class RestControllerAuth {
     //Método para poder logear un usuario y obtener un token
     @PostMapping("login")
     public ResponseEntity<DtoAuthRespuesta> login(@RequestBody DtoLogin dtoLogin) {
-        Authentication authentication = authenticationManager.authenticate(new UsernamePasswordAuthenticationToken(
-                dtoLogin.getLogin(), dtoLogin.getPassword()));
+        Authentication authentication = authenticationManager.authenticate(new UsernamePasswordAuthenticationToken(dtoLogin.getLogin(), dtoLogin.getPassword()));
+
+        System.out.println(authentication.getAuthorities().toString());
+
         SecurityContextHolder.getContext().setAuthentication(authentication);
         String token = jwtGenerador.generarToken(authentication);
-        return new ResponseEntity<>(new DtoAuthRespuesta(token), HttpStatus.OK);
+        DtoAuthRespuesta authRespuesta = new DtoAuthRespuesta(token);
+        authRespuesta.setRoles(authentication.getAuthorities().toString());
+        return new ResponseEntity<>(authRespuesta, HttpStatus.OK);
     }
 
 }

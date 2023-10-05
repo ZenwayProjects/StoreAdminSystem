@@ -4,6 +4,7 @@ import com.fasterxml.jackson.annotation.JsonIgnore;
 import jakarta.persistence.*;
 import lombok.Data;
 
+import java.util.ArrayList;
 import java.util.List;
 
 @Entity
@@ -18,10 +19,9 @@ public class Categoria {
     @Column(name = "cat_nombre", unique = true, nullable = false)
     private String catNombre;
 
-
-    @JsonIgnore
-    @OneToMany(fetch = FetchType.EAGER, cascade = CascadeType.ALL, mappedBy = "catPadre")
-    private List<SubCategoria> subcategorias;
+//    @JsonIgnore
+    @OneToMany(mappedBy = "catPadre", fetch = FetchType.LAZY)
+    private List<SubCategoria> subcategorias= new ArrayList<>();
 
 
 }

@@ -10,6 +10,8 @@ import org.springframework.web.bind.annotation.RequestBody;
 import org.springframework.web.bind.annotation.RequestMapping;
 import org.springframework.web.bind.annotation.RestController;
 
+import java.util.Map;
+
 @RestController
 @RequestMapping("/api/asignacion")
 public class AsignacionController {
@@ -21,12 +23,16 @@ public class AsignacionController {
     }
 
     @PostMapping("/usuario")
-    public ResponseEntity<String> asignarUsuarioLocal(@RequestBody DtoAsignacion dtoAsignacion) {
+    public ResponseEntity asignarUsuarioLocal(@RequestBody DtoAsignacion dtoAsignacion) {
         try {
             asignacionService.asignarRol(dtoAsignacion);
-            return ResponseEntity.ok("Usuario asignado como USUARIO_LOCAL exitosamente.");
+            String mensaje = "Usuario asignado como USUARIO_LOCAL exitosamente.";
+            return ResponseEntity.ok().body(Map.of("mensaje", mensaje));
+
         } catch (Exception e) {
+            e.printStackTrace();
             return ResponseEntity.status(HttpStatus.INTERNAL_SERVER_ERROR).body("Error al asignar el usuario como USUARIO_LOCAL.");
         }
     }
+
 }

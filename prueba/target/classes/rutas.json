@@ -37,7 +37,7 @@
   {
     "metodo": "GET",
     "ruta": "/api/categoria/listar",
-    "roles": ["ADMIN"]
+    "roles": ["ADMIN","USUARIO_LOCAL"]
   },
   {
     "metodo": "GET",
@@ -57,6 +57,11 @@
   {
     "metodo": "GET",
     "ruta": "/api/local/listar",
+    "roles": ["ADMIN"]
+  },
+  {
+    "metodo": "POST",
+    "ruta": "/api/asignacion/usuario",
     "roles": ["ADMIN"]
   }
 ]

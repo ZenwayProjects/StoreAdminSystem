@@ -1,8 +1,6 @@
 package com.zenway.prueba.model;
 
-import com.fasterxml.jackson.annotation.JsonIgnore;
 import jakarta.persistence.*;
-import jdk.jfr.DataAmount;
 import lombok.Data;
 
 import java.util.HashSet;
@@ -27,7 +25,11 @@ public class LocalComercial {
     @Column(name = "local_celular")
     private String localCelular;
 
+    @Column(name = "local_representante")
+    private String localRepresentanteLegal;
 
+
+    @Column(name = "local_Estado")
     @Enumerated(EnumType.STRING)
     private local_estado localEstado;
 
@@ -41,7 +43,7 @@ public class LocalComercial {
     @JoinColumn(name = "local_subcategoria_id", referencedColumnName = "subcategoria_id")
     private SubCategoria localSubcategoria;
 
-    @OneToMany(mappedBy = "usl_local")
+    @OneToMany(mappedBy = "uslLocal")
     private Set<UsuarioLocal> usuariosLocales = new HashSet<>();
 
     @OneToMany(mappedBy = "aud_local_id")

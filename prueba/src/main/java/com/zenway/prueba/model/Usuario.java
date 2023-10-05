@@ -46,7 +46,7 @@ public class Usuario {
     )
     private Set<LocalComercial> localesComerciales = new HashSet<>();
 
-    @OneToMany(mappedBy = "usl_usuario")
+    @OneToMany(mappedBy = "uslUsuario")
     private Set<UsuarioLocal> usuariosLocales = new HashSet<>();
 
     @OneToMany(mappedBy = "aud_usuario_id")
