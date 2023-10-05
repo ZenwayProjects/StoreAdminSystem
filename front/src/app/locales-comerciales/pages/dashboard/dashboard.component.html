@@ -4,7 +4,7 @@
       <i class="fas fa-cogs me-2"></i> Panel de control 
     </h1>
     <div>
-      <button
+      <button *ngIf="roles['admin']"
         type="button"
         class="btn btn-primary btn-sm me-2"
         data-bs-toggle="modal"
@@ -36,7 +36,7 @@
         <div class="modal-dialog">
           <div class="modal-content">
             <div class="modal-header">
-              <h1 class="modal-title fs-5" id="form">Modal title</h1>
+              <h1 class="modal-title fs-5" id="form">Crear Usuario</h1>
               <button
                 type="button"
                 class="btn-close"
@@ -46,6 +46,33 @@
             </div>
             <div class="modal-body">
               <form [formGroup]="userForm" autocomplete="off">
+                <div class="mb-3">
+                  <label for="nombre">Nombre</label>
+                  <input
+                          type="text"
+                          id="nombre"
+                          formControlName="nombre"
+                          class="form-control"
+                  />
+                </div>
+                <div class="mb-3">
+                  <label for="apellido">Apellido</label>
+                  <input
+                          type="text"
+                          id="apellido"
+                          formControlName="apellido"
+                          class="form-control"
+                  />
+                </div>
+                <div class="mb-3">
+                  <label for="documento">Numero Documento</label>
+                  <input
+                          type="text"
+                          id="documento"
+                          formControlName="documento"
+                          class="form-control"
+                  />
+                </div>
                 <div class="mb-3">
                   <label for="username">Nombre de usuario</label>
                   <input
@@ -84,8 +111,8 @@
                     class="form-control"
                   >
                     <option value="">Seleccione un local</option>
-                    <option *ngFor="let local of shops" [value]="local.id">
-                      {{ local.nombreNegocio }}
+                    <option *ngFor="let local of shops" [value]="local.localId">
+                      {{ local.localNombre }}
                     </option>
                   </select>
                 </div>

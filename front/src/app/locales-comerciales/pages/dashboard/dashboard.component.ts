@@ -15,6 +15,11 @@ export class DashboardComponent {
   userForm!: FormGroup;
   locales: string[] = ['Local 1', 'Local 2', 'Local 3'];
   shops: any[] = [];
+  roles: { [key: string]: boolean } = {
+    admin: false ,
+    usuario_local: false ,
+    vigilante: false
+  };
 
   constructor(
     private authService: AuthService,
@@ -30,6 +35,9 @@ export class DashboardComponent {
 
   initializeForm() {
     this.userForm = this.formBuilder.group({
+      nombre: ['', Validators.required],
+      documento: ['', Validators.required],
+      apellido: ['', Validators.required],
       username: ['', Validators.required],
       email: ['', [Validators.required, Validators.email]],
       password: ['', [Validators.required]],
@@ -38,6 +46,28 @@ export class DashboardComponent {
   }
 
   ngOnInit(): void {
+    const rolesStr = localStorage.getItem('roles');
+    if (rolesStr) {
+      try {
+        const roles = JSON.parse(rolesStr);
+        if (roles.includes('ADMIN')) {
+          console.log("es admin");
+          this.roles['admin'] = true;
+        }
+        if (roles.includes('VIGILANTE')) {
+          console.log("es vigilante")
+          this.roles['vigilante'] = true;
+        }
+        if (roles.includes('USUARIO_LOCAL')) {
+          console.log("es usuario_local")
+          this.roles['usuario_local'] = true;
+        }
+      } catch (error) {
+        console.error('Error al analizar la cadena JSON de roles:', error);
+      }
+    }
+
+
     this.localesComercialesService.getShops().subscribe(
       (data: any[]) => {
         this.shops = data;
@@ -59,26 +89,30 @@ export class DashboardComponent {
       return;
     }
 
-    const { username, email, password, selectedLocale } = this.userForm.value;
+    const { nombre, apellido, documento, username, email, password, selectedLocale } = this.userForm.value;
 
     const updatedUserFormValue = {
+      nombre: nombre,
+      numeroDocumento: documento,
+      apellido: apellido,
       email: email,
-      username: username,
+      login: username,
       password: password,
-      shopModel: {
-        id: selectedLocale,
-      },
+      local: selectedLocale
     };
 
-    this.userService.addUser(updatedUserFormValue).subscribe(
-      (response) => {
+    this.userService.addUser(updatedUserFormValue).subscribe({
+      next: (response) => {
+        console.log(response);
         Swal.fire('Éxito', 'Guardado exitosamente', 'success');
         this.userForm.reset();
+
       },
-      (error) => {
+      error: (error) => {
+        console.log(error);
         Swal.fire('Error', 'Error al guardar', 'error');
       }
-    );
+    });
   }
 
   onLogout() {

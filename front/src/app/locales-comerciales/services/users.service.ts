@@ -1,6 +1,6 @@
 import { HttpClient, HttpHeaders } from '@angular/common/http';
 import { Injectable } from '@angular/core';
-import { Observable } from 'rxjs';
+import {map, Observable} from 'rxjs';
 import { environment } from 'src/enviroments/enviroment';
 
 @Injectable({
@@ -19,9 +19,9 @@ export class UsersService {
     });
   }
 
-  addUser(shop: any): Observable<any> {
+  addUser(usuario: any): Observable<any> {
     const headers = this.getAuthHeader();
 
-    return this.http.post<any>(`${this._baseUrl}/users`, shop, { headers });
+    return this.http.post<any>(`${this._baseUrl}/api/asignacion/usuario`, usuario, { headers });
   }
 }

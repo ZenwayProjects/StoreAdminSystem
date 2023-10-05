@@ -2,6 +2,7 @@ import { HttpClient, HttpHeaders } from '@angular/common/http';
 import { Injectable } from '@angular/core';
 import { Observable, map } from 'rxjs';
 import { environment } from 'src/enviroments/enviroment';
+import {Categoria} from "../interfaces/Categoria";
 
 @Injectable({
   providedIn: 'root',
@@ -18,7 +19,6 @@ export class CategoryService {
       Authorization: `Bearer ${token}`,
     });
   }
-
   loadCategories(): Observable<any[]> {
     const headers = this.getAuthHeader();
 

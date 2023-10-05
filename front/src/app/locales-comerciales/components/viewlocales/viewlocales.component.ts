@@ -5,6 +5,7 @@ import { FormGroup, FormBuilder, Validators } from '@angular/forms';
 import * as pdfMake from 'pdfmake/build/pdfmake';
 import * as pdfFonts from 'pdfmake/build/vfs_fonts';
 import { CategoryService } from '../../services/category.service';
+import {Categoria} from "../../interfaces/Categoria";
 
 (<any>pdfMake).vfs = pdfFonts.pdfMake.vfs;
 
@@ -17,9 +18,14 @@ export class ViewlocalesComponent {
   shops: any[] = [];
   selectedShop: any = {};
   updateForm!: FormGroup;
-  categoriesData: string[] = [];
+  categoriesData: Categoria[] = [];
   estados: string[] = ['ACTIVO', 'INACTIVO', 'EN_DEUDA', 'EN_DESALOJO'];
   subcategorias: any = {};
+  roles: { [key: string]: boolean } = {
+    admin: false ,
+    usuario_local: false ,
+    vigilante: false
+  };
 
   private categoryService = inject(CategoryService);
 
@@ -40,10 +46,32 @@ export class ViewlocalesComponent {
   }
 
   ngOnInit(): void {
+    const rolesStr = localStorage.getItem('roles');
+    if (rolesStr) {
+      try {
+        const roles = JSON.parse(rolesStr);
+        if (roles.includes('ADMIN')) {
+          console.log("es admin");
+          this.roles['admin'] = true;
+        }
+        if (roles.includes('VIGILANTE')) {
+          console.log("es vigilante")
+          this.roles['vigilante'] = true;
+        }
+        if (roles.includes('USUARIO_LOCAL')) {
+          console.log("es usuario_local")
+          this.roles['usuario_local'] = true;
+        }
+      } catch (error) {
+        console.error('Error al analizar la cadena JSON de roles:', error);
+      }
+    }
+
     this.loadLocalesComerciales();
     this.loadCategories();
     this.localesComercialesService.getShops().subscribe(
       (data: any[]) => {
+        console.log(data)
         this.shops = data;
       },
       (error) => {
@@ -56,14 +84,14 @@ export class ViewlocalesComponent {
     this.categoryService.loadCategories().subscribe(
       (response) => {
         response.forEach((item) => {
-          const categoria = Object.keys(item)[0];
-          const categoriaId = item[categoria].id;
-          const subCategorias = item[categoria].subCategories.map((subCat) => {
-            return { id: subCat.id, nombre: subCat.nombre };
+          let categoria : Categoria;
+          categoria = item;
+          const categoriaId = item.categoriaId;
+          const subCategorias = item.subcategorias.map((subCat) => {
+            return { id: subCat.id, nombre: subCat.subcNombre };
           });
-
           this.categoriesData.push(categoria);
-          this.subcategorias[subCategorias] = subCategorias;
+          this.subcategorias[categoriaId] = subCategorias;
         });
       },
       (error) => {
@@ -85,6 +113,8 @@ export class ViewlocalesComponent {
   }
 
   createPDF() {
+    this.shops.map(shop => console.log(shop))
+    console.log();
     const pdfDefinition: any = {
       content: [
         {
@@ -106,12 +136,12 @@ export class ViewlocalesComponent {
               ],
   
               ...this.shops.map((shop) => [
-                shop.nombreNegocio,
-                shop.ubicacion,
-                shop.representanteLegal,
-                shop.telefonoContacto,
-                shop.estado,
-                shop.subCategoria.categoria.nombre,
+                shop.localNombre,
+                shop.localUbicacion,
+                shop.localRepresentanteLegal,
+                shop.localCelular,
+                shop.localEstado,
+                shop.localSubcategoria.subcNombre,
               ]),
             ],
           },
@@ -132,6 +162,13 @@ export class ViewlocalesComponent {
 
   private loadLocalesComerciales(): void {
     this.localesComercialesService.loadShops();
+    if(this.roles['usuario_local'])
+      this.loadLocalesComercialesUsuario();
+  }
+
+  private loadLocalesComercialesUsuario(): void {
+    console.log(this.shops)
+    this.localesComercialesService.loadShopsUsuarioLocal();
   }
 
   handleModal(shop: any) {
@@ -140,13 +177,13 @@ export class ViewlocalesComponent {
     console.log(this.selectedShop)
 
     this.updateForm.patchValue({
-      nombreNegocio: this.selectedShop.nombreNegocio,
-      ubicacion: this.selectedShop.ubicacion,
-      representanteLegal: this.selectedShop.representanteLegal,
-      telefonoContacto: this.selectedShop.telefonoContacto,
-      estado: this.selectedShop.estado,
+      nombreNegocio: this.selectedShop.localNombre,
+      ubicacion: this.selectedShop.localUbicacion,
+      representanteLegal: this.selectedShop.localRepresentanteLegal,
+      telefonoContacto: this.selectedShop.localCelular,
+      estado: this.selectedShop.localEstado,
       categoria: this.selectedShop.categoria,
-      subcategoria: this.selectedShop.subCategoria.id,
+      subcategoria: this.selectedShop.localSubcategoria,
     });
   }
 
@@ -164,16 +201,16 @@ export class ViewlocalesComponent {
 
     // Si los campos son válidos, continúa con el proceso de actualización
     const data = {
-      nombreNegocio: this.updateForm.value.nombreNegocio,
-      ubicacion: this.updateForm.value.ubicacion,
-      representanteLegal: this.updateForm.value.representanteLegal,
-      telefonoContacto: this.updateForm.value.telefonoContacto,
-      estado: this.updateForm.value.estado,
-      subCategoria: {
+      localNombre: this.updateForm.value.nombreNegocio,
+      localUbicacion: this.updateForm.value.ubicacion,
+      localRepresentanteLegal: this.updateForm.value.representanteLegal,
+      localCelular: this.updateForm.value.telefonoContacto,
+      localEstado: this.updateForm.value.estado,
+      localSubcategoria: {
         id: parseInt(this.updateForm.value.subCategoria),
       },
     };
-
+    console.log(id)
     this.localesComercialesService.updateShop(id, data).subscribe(
       () => {
         Swal.fire({
@@ -183,6 +220,7 @@ export class ViewlocalesComponent {
           showConfirmButton: false,
           timer: 2000,
         });
+        window.location.reload();
       },
       (error) => {
         Swal.fire({

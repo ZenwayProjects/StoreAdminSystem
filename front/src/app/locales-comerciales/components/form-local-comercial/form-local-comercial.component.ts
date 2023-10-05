@@ -3,6 +3,8 @@ import { FormBuilder, FormGroup, Validators } from '@angular/forms';
 import Swal from 'sweetalert2';
 import { LocalesComercialesService } from '../../services/locales-comerciales.service';
 import { CategoryService } from '../../services/category.service';
+import { Categoria } from '../../interfaces/Categoria';
+
 
 @Component({
   selector: 'app-form-local-comercial',
@@ -10,11 +12,18 @@ import { CategoryService } from '../../services/category.service';
   styleUrls: ['./form-local-comercial.component.css'],
 })
 export class FormLocalComercialComponent {
+
   tiendaForm!: FormGroup;
   estados: string[] = ['ACTIVO', 'INACTIVO', 'EN_DEUDA', 'EN_DESALOJO'];
-  categoriesData: string[] = [];
+  categoriesData: Categoria[] = [];
   subcategorias: any = {};
   isLoading: boolean = false;
+  mostrarFormulario: boolean = true;
+  roles: { [key: string]: boolean } = {
+      admin: false ,
+      usuario_local: false ,
+      vigilante: false
+  };
 
   private localesComercialesService = inject(LocalesComercialesService);
   private categoryService = inject(CategoryService);
@@ -22,6 +31,27 @@ export class FormLocalComercialComponent {
   constructor(private formBuilder: FormBuilder) {}
 
   ngOnInit() {
+    const rolesStr = localStorage.getItem('roles');
+    if (rolesStr) {
+      try {
+        const roles = JSON.parse(rolesStr);
+        if (roles.includes('ADMIN')) {
+          console.log("es admin");
+          this.roles['admin'] = true;
+        }
+        if (roles.includes('VIGILANTE')) {
+          console.log("es vigilante")
+          this.roles['vigilante'] = true;
+        }
+        if (roles.includes('USUARIO_LOCAL')) {
+          console.log("es usuario_local")
+          this.roles['usuario_local'] = true;
+        }
+      } catch (error) {
+        console.error('Error al analizar la cadena JSON de roles:', error);
+      }
+    }
+
     this.createForm();
     this.loadCategories();
   }
@@ -30,14 +60,14 @@ export class FormLocalComercialComponent {
     this.categoryService.loadCategories().subscribe(
       (response) => {
         response.forEach((item) => {
-          const categoria = Object.keys(item)[0];
-          const categoriaId = item[categoria].id;
-          const subCategorias = item[categoria].subCategories.map((subCat) => {
-            return { id: subCat.id, nombre: subCat.nombre };
+          let categoria : Categoria;
+          categoria = item;
+          const categoriaId = item.categoriaId;
+          const subCategorias = item.subcategorias.map((subCat) => {
+            return { id: subCat.id, nombre: subCat.subcNombre };
           });
-
           this.categoriesData.push(categoria);
-          this.subcategorias[categoria] = subCategorias;
+          this.subcategorias[categoriaId] = subCategorias;
         });
       },
       (error) => {
@@ -72,21 +102,19 @@ export class FormLocalComercialComponent {
 
   onSubmit() {
     if (!this.tiendaForm.valid) {
-      Swal.fire('Error', 'Todos los campos deben ser llenados', 'error');
+      Swal.fire('Error', 'Todos los campos deben ser llenos', 'error');
       return;
     }
 
     this.isLoading = true;
 
     const data = {
-      nombreNegocio: this.tiendaForm.value.nombreNegocio,
-      ubicacion: this.tiendaForm.value.ubicacion,
-      representanteLegal: this.tiendaForm.value.representanteLegal,
-      telefonoContacto: this.tiendaForm.value.telefonoContacto,
-      estado: this.tiendaForm.value.estado,
-      subCategoria: {
-        id: parseInt(this.tiendaForm.value.subCategoria),
-      },
+      localNombre: this.tiendaForm.value.nombreNegocio,
+      localUbicacion: this.tiendaForm.value.ubicacion,
+      localRepresentanteLegal: this.tiendaForm.value.representanteLegal,
+      localCelular: this.tiendaForm.value.telefonoContacto,
+      localEstado: this.tiendaForm.value.estado,
+      localSubcategoriaId: this.tiendaForm.value.subCategoria,
     };
 
     this.localesComercialesService.addShop(data).subscribe(

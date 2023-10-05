@@ -5,15 +5,16 @@
       <div class="card shadow my-2">
         <div class="card-body">
           <div class="d-flex justify-content-between align-items-center">
-            <h5 class="card-title">{{ shop.nombreNegocio }}</h5>
+            <h5 class="card-title">{{ shop.localNombre }}</h5>
             <div>
-              <button class="btn btn-danger btn-sm" (click)="onDelete(shop.id)">
+              <button *ngIf="roles['admin']" class="btn btn-danger btn-sm" (click)="onDelete(shop.localId)">
                 <i class="fas fa-trash"></i> 
               </button>
-              <button
+              <button *ngIf="roles['admin'] || roles['usuario_local']" 
                 class="btn btn-primary btn-sm ms-2 animated"
                 data-bs-toggle="modal"
                 data-bs-target="#exampleModal"
+
                 (click)="handleModal(shop)"
               >
                 <i class="fas fa-edit"></i>
@@ -24,17 +25,17 @@
             <button
               class="btn btn-primary btn-sm" 
               data-bs-toggle="collapse"
-              [attr.data-bs-target]="'#shopDetails' + shop.id"
+              [attr.data-bs-target]="'#shopDetails' + shop.localId"
               aria-expanded="false"
             >
                 Ver detalles
             </button>
-            <div class="collapse mt-3" [id]="'shopDetails' + shop.id" style="background-color: #181717; color: white;">
+            <div class="collapse mt-3" [id]="'shopDetails' + shop.localId" style="background-color: #181717; color: white;">
               <ul class="list-group list-group-flush">
-                <li class="list-group-item"><strong>Ubicación:</strong> {{ shop.ubicacion }}</li>
-                <li class="list-group-item"><strong>Representante Legal:</strong> {{ shop.representanteLegal }}</li>
-                <li class="list-group-item"><strong>Teléfono de Contacto:</strong> {{ shop.telefonoContacto }}</li>
-                <li class="list-group-item"><strong>Estado:</strong> {{ shop.estado }}</li>
+                <li class="list-group-item"><strong>Ubicación:</strong> {{ shop.localUbicacion }}</li>
+                <li class="list-group-item"><strong>Representante Legal:</strong> {{ shop.localrepresentanteLegal }}</li>
+                <li class="list-group-item"><strong>Teléfono de Contacto:</strong> {{ shop.localCelular}}</li>
+                <li class="list-group-item"><strong>Estado:</strong> {{ shop.localEstado }}</li>
               </ul>
             </div>            
           </div>
@@ -85,7 +86,7 @@
             <label for="categoria" class="text-white">Categoría</label>
             <select class="form-control" id="categoria" formControlName="categoria" (change)="onCategoriaChange()">
               <option value="">Selecciona una categoría</option>
-              <option *ngFor="let categoria of categoriesData" [value]="categoria">{{ categoria }}</option>
+              <option *ngFor="let categoria of categoriesData" [value]="categoria.categoriaId">{{ categoria.catNombre }}</option>
             </select>
           </div>
           <div class="form-group">
@@ -95,7 +96,7 @@
               <option *ngFor="let subcategoria of subcategorias[updateForm.get('categoria')!.value]" [value]="subcategoria.id">{{ subcategoria.nombre }}</option>
             </select>
           </div>
-          <button type="submit" class="btn btn-primary my-3"(click)="onEditShop(selectedShop.id)">
+          <button type="submit" class="btn btn-primary my-3"(click)="onEditShop(selectedShop.localId)">
             Guardar cambios
           </button>
         </form>

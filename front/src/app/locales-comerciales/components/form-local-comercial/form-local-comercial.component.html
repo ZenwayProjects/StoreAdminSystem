@@ -1,6 +1,6 @@
 
 <link rel="stylesheet" href="https://cdnjs.cloudflare.com/ajax/libs/font-awesome/5.15.3/css/all.min.css">
-<form [formGroup]="tiendaForm" (ngSubmit)="onSubmit()" class="border p-4 rounded shadow" autocomplete="off">
+<form *ngIf="roles['admin']" [formGroup]="tiendaForm" (ngSubmit)="onSubmit()" class="border p-4 rounded shadow" autocomplete="off">
   <h2 class="text-center mb-4">
     <i class="fas fa-store"></i> Registro de Tienda
   </h2>  
@@ -37,7 +37,7 @@
     <label for="categoria" class="form-label">Categoría</label>
     <select class="form-select" id="categoria" formControlName="categoria" (change)="onCategoriaChange()">
       <option value="">Seleccione</option>
-      <option *ngFor="let categoria of categoriesData" [value]="categoria">{{ categoria }}</option>
+      <option *ngFor="let categoria of categoriesData" [value]="categoria.categoriaId">{{ categoria.catNombre  }}</option>
     </select>
   </div>
 

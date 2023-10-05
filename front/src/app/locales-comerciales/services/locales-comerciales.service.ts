@@ -10,6 +10,9 @@ export class LocalesComercialesService {
   private shops: any[] = [];
   private shopsSubject: BehaviorSubject<any[]> = new BehaviorSubject<any[]>([]);
 
+  private shopsUsuario: any[] = [];
+  private shopsSubjectUsuario: BehaviorSubject<any[]> = new BehaviorSubject<any[]>([]);
+
   private _baseUrl: string = environment.baseUrl;
 
   constructor(private http: HttpClient) {}
@@ -30,7 +33,7 @@ export class LocalesComercialesService {
 
     this.http.get<any[]>(`${this._baseUrl}/api/local/listar`, { headers }).subscribe(
       (data) => {
-        this.shops = data;
+        this.shops = data.map((shop) => ({ ...shop, belongsToUser: false }));
         this.shopsSubject.next(this.shops);
       },
       (error) => {
@@ -38,6 +41,33 @@ export class LocalesComercialesService {
       }
     );
   }
+
+    loadShopsUsuarioLocal(): void {
+        const headers = this.getAuthHeader();
+
+        this.http.get<any[]>(`${this._baseUrl}/api/local/usuario`, { headers }).subscribe(
+            (data) => {
+                this.shopsUsuario =data;
+
+                this.shops = this.shops.map((shop) => {
+                    // Verifica si la tienda está en this.shopsUsuario
+                    console.log(shop)
+                    console.log(this.shopsUsuario)
+                    const belongsToUser = this.shopsUsuario.some((userShop) => userShop.localId === shop.localId);
+
+                    // Actualiza la propiedad belongsToUser
+                    return { ...shop, belongsToUser };
+                });
+                console.log(this.shops)
+
+                // Actualiza el subject
+                this.shopsSubject.next(this.shops);
+            },
+            (error) => {
+                console.error(error);
+            }
+        );
+    }
 
   clearShops(): void {
     this.shops = [];
@@ -59,7 +89,7 @@ export class LocalesComercialesService {
     const headers = this.getAuthHeader();
 
     return this.http
-      .delete<any>(`${this._baseUrl}/api/local/${id}`, { headers })
+      .delete<any>(`${this._baseUrl}/api/local/eliminar/${id}`, { headers })
       .pipe(
         tap(() => {
           const index = this.shops.findIndex((shop) => shop.id === id);
@@ -75,7 +105,7 @@ export class LocalesComercialesService {
     const headers = this.getAuthHeader();
 
     return this.http
-      .put<any>(`${this._baseUrl}/api/local/delete${id}`, data, { headers })
+      .put<any>(`${this._baseUrl}/api/local/actualizar/${id}`, data, { headers })
       .pipe(
         tap((data) => {
           const index = this.shops.findIndex((shop) => shop.id === id);

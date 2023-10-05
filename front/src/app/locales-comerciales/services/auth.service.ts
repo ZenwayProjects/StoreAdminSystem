@@ -25,10 +25,13 @@ export class AuthService {
 
   constructor(private http: HttpClient) {}
 
-  private setAuthentication(user: any, token: string): boolean {
+  private setAuthentication(user: any, token: string, roles:string): boolean {
     this._currentUser = user;
     this._authStatus = AuthStatus.authenticated;
     localStorage.setItem('token', token);
+
+
+    localStorage.setItem('roles', JSON.stringify(roles))
 
     return true;
   }
@@ -39,7 +42,7 @@ export class AuthService {
     const body = { login, password };
 
     return this.http.post<any>(url, body).pipe(
-      map(({ Login, token }) => this.setAuthentication(Login, token)),
+      map(({ Login, accessToken, roles }) => this.setAuthentication(Login, accessToken, roles)),
       catchError((err) => throwError(err.error.message))
     );
   }
