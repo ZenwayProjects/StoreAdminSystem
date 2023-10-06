@@ -10,7 +10,7 @@
               <button *ngIf="roles['admin']" class="btn btn-danger btn-sm" (click)="onDelete(shop.localId)">
                 <i class="fas fa-trash"></i> 
               </button>
-              <button *ngIf="roles['admin'] || roles['usuario_local']" 
+              <button *ngIf="roles['admin'] || roles['usuario_local']" [disabled]="!shop.belongsToUser && !roles['admin']"
                 class="btn btn-primary btn-sm ms-2 animated"
                 data-bs-toggle="modal"
                 data-bs-target="#exampleModal"

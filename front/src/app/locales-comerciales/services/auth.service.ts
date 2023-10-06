@@ -28,8 +28,8 @@ export class AuthService {
   private setAuthentication(user: any, token: string, roles:string): boolean {
     this._currentUser = user;
     this._authStatus = AuthStatus.authenticated;
-    localStorage.setItem('token', token);
 
+    localStorage.setItem('token', token);
 
     localStorage.setItem('roles', JSON.stringify(roles))
 

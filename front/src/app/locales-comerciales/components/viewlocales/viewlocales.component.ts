@@ -48,23 +48,18 @@ export class ViewlocalesComponent {
   ngOnInit(): void {
     const rolesStr = localStorage.getItem('roles');
     if (rolesStr) {
-      try {
-        const roles = JSON.parse(rolesStr);
-        if (roles.includes('ADMIN')) {
+        if (rolesStr.includes('ADMIN')) {
           console.log("es admin");
           this.roles['admin'] = true;
         }
-        if (roles.includes('VIGILANTE')) {
+        if (rolesStr.includes('VIGILANTE')) {
           console.log("es vigilante")
           this.roles['vigilante'] = true;
         }
-        if (roles.includes('USUARIO_LOCAL')) {
+        if (rolesStr.includes('USUARIO_LOCAL')) {
           console.log("es usuario_local")
           this.roles['usuario_local'] = true;
         }
-      } catch (error) {
-        console.error('Error al analizar la cadena JSON de roles:', error);
-      }
     }
 
     this.loadLocalesComerciales();
