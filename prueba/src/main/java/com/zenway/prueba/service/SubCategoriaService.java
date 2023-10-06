@@ -38,7 +38,7 @@ public class SubCategoriaService {
     // Método para crear una nueva subcategoría
     public SubCategoria crearSubCategoria(SubCategoria subCategoria) {
 
-
+        System.out.println(subCategoria.getCatPadre().getCategoriaId());
         return subCategoriaRepository.save(subCategoria);
     }
     public SubCategoria obtenerSubcategoriaPorId(Long subcategoriaId) {

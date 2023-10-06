@@ -27,17 +27,13 @@ public class SubCategoria {
     @OneToMany(mappedBy = "localSubcategoria")
     private List<LocalComercial> locales;
 
-
     @Override
     public String toString() {
         if (catPadre != null && catPadre.equals(this)) {
             return "";
         }
 
-        return "SubCategoria{" +
-                "subcategoriaId=" + id +
-                ", subcatNombre='" + subcNombre + '\'' +
-                '}';
+        return "SubCategoria{" +"subcategoriaId=" + id +", subcatNombre='" + subcNombre + '\'' +'}';
     }
 
 }

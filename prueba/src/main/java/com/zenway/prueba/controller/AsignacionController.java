@@ -16,7 +16,6 @@ import java.util.Map;
 @RequestMapping("/api/asignacion")
 public class AsignacionController {
     private final AsignacionService asignacionService;
-
     @Autowired
     public AsignacionController(AsignacionService asignacionService) {
         this.asignacionService = asignacionService;

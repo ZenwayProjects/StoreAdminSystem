@@ -38,6 +38,8 @@ public class SubCategoriaController {
     // Endpoint para crear una nueva subcategoría
     @PostMapping("crear")
     public ResponseEntity<SubCategoria> crearSubcategoria(@RequestBody SubCategoria subCategoria) {
+        System.out.println(subCategoria.toString());
+
         SubCategoria nuevaSubcategoria = subCategoriaService.crearSubCategoria(subCategoria);
         return new ResponseEntity<>(nuevaSubcategoria, HttpStatus.CREATED);
     }
